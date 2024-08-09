@@ -75,9 +75,9 @@ export const deleteTask: RequestHandler = handleErrorAsync(async (req, res, next
 });
 
 export const editTask: RequestHandler = handleErrorAsync(async (req, res, next) => {
-    const { id, name, remarks, content, location, creator } = req.body;
+    const { id, name, remarks, content, location, creator, taskDate, taskTime } = req.body;
 
-    const requiredFields = ['id', 'name', 'remarks', 'content', 'location', 'creator'];
+    const requiredFields = ['id', 'name', 'remarks', 'content', 'location', 'creator', 'taskDate', 'taskTime'];
     const missingFields = requiredFields.filter(field => req.body[field] === undefined);
 
     if (missingFields.length > 0) {
@@ -95,8 +95,8 @@ export const editTask: RequestHandler = handleErrorAsync(async (req, res, next) 
     }
 
     //update task
-    const sql = `UPDATE Tasks SET name = ?, remarks = ?, content = ?, location = ?, creator = ? WHERE id = ?`;
-    const params = [name, remarks, content, location, creator, id];
+    const sql = `UPDATE Tasks SET name = ?, remarks = ?, content = ?, location = ?, creator = ?, taskDate = ?, taskTime = ?   WHERE id = ?`;
+    const params = [name, remarks, content, location, creator, taskDate, taskTime, id];
     await pool.query(sql, params);
 
     res.status(200).json(
